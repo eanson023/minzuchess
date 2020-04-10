@@ -12,8 +12,8 @@ demo请见:[nation.eanson.work](nation.eanson.work "nation.eanson.work")
 2. sql在resources文件夹下
 3. 本项目许多素材尚未填充，但基本逻辑已经实现,同时支持负载均衡
 ### 具体技术
-前端:html+css+javascript+jquery+bootstrap,其它:[轻量级的JavaScript表单验证](https://github.com/jaywcjlove/validator.js) [bootswatch](https://github.com/thomaspark/bootswatch) [数据表格](https://github.com/DataTables/DataTables)等
+前端:html+css+javascript+jquery+bootstrap,其它:[轻量级的JavaScript表单验证](https://github.com/jaywcjlove/validator.js) ,[bootswatch](https://github.com/thomaspark/bootswatch),[数据表格](https://github.com/DataTables/DataTables)等
 
-后端:Spring+SpringMVC+Mybatis+Shiro+Mysql+Redis,其它:[shiro-redis](https://github.com/alexxiyang/shiro-redis) [Mybatis通用分页插件](https://github.com/pagehelper/Mybatis-PageHelper) [druid](https://github.com/alibaba/druid)
+后端:Spring+SpringMVC+Mybatis+Shiro+Mysql+Redis,其它:[shiro-redis](https://github.com/alexxiyang/shiro-redis),[Mybatis通用分页插件](https://github.com/pagehelper/Mybatis-PageHelper),[druid](https://github.com/alibaba/druid)
 ---
 写在最后:这是本萌新的第一个较完整的项目,但是还是有很多不足的地方,如果你看到了,请向我指出(前端就算了)
