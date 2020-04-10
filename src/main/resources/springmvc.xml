@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+    <context:component-scan base-package="work.eanson.controller">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <mvc:resources mapping="/js/**" location="/WEB-INF/static/js/"/>
+    <mvc:resources mapping="/css/**" location="/WEB-INF/static/css/"/>
+    <mvc:resources mapping="/icons/**" location="/WEB-INF/static/icons/"/>
+    <mvc:resources mapping="/img/**" location="/WEB-INF/static/img/"/>
+    <mvc:resources mapping="/webfonts/**" location="/WEB-INF/static/webfonts/"/>
+    <mvc:resources mapping="/pages/**" location="/WEB-INF/static/pages/"/>
+    <mvc:resources mapping="/md/**" location="/WEB-INF/static/md/"/>
+
+    <!--    controller切面-->
+    <aop:aspectj-autoproxy/>
+    <!--必须开启 草了 不然Response注解..没用-->
+    <mvc:annotation-driven/>
+    <!--        websocket-->
+    <websocket:handlers allowed-origins="*">
+        <websocket:mapping path="/jq/global" handler="cbSocketEndPoint"/>
+        <websocket:mapping path="/jq/log_socket" handler="logSocketEndPoint"/>
+        <websocket:handshake-interceptors>
+            <ref bean="webSocketInterceptor"/>
+        </websocket:handshake-interceptors>
+    </websocket:handlers>
+    <!--    socketJs-->
+    <websocket:handlers allowed-origins="*">
+        <websocket:mapping path="/jq/global" handler="cbSocketEndPoint"/>
+        <websocket:mapping path="/jq/log_socket.ws" handler="logSocketEndPoint"/>
+        <websocket:handshake-interceptors>
+            <ref bean="webSocketInterceptor"/>
+        </websocket:handshake-interceptors>
+    </websocket:handlers>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--        2mb-->
+        <property name="maxUploadSize" value="2097152"/>
+    </bean>
+    <!-- 开启shiro注解-->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor">
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <!--登录-->
+                <prop key="org.apache.shiro.authz.UnauthenticatedException">
+                    redirect:/login
+                </prop>
+                <!--授权-->
+                <prop key="org.apache.shiro.authz.UnauthorizedException">
+                    redirect:/index
+                </prop>
+            </props>
+        </property>
+        <property name="defaultErrorView" value="error/500"/>
+    </bean>
+</beans>

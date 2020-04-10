@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-4.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--    shiro-redis-->
+    <!-- Redis Manager [start] -->
+    <bean id="redisManager" class="org.crazycake.shiro.RedisManager">
+        <property name="jedisPool" ref="jedisPool"/>
+    </bean>
+    <!-- Redis Manager [end] -->
+
+    <!-- Redis session DAO [start] -->
+    <bean id="redisSessionDAO" class="org.crazycake.shiro.RedisSessionDAO">
+        <property name="redisManager" ref="redisManager"/>
+    </bean>
+
+    <!-- Redis cache manager [start] -->
+    <bean id="cacheManager" class="org.crazycake.shiro.RedisCacheManager">
+        <property name="redisManager" ref="redisManager"/>
+        <!-- shiro-redis will call userInfo.getUserid() to get the id for storing Redis object.  -->
+        <property name="principalIdFieldName" value="telephone"/>
+    </bean>
+    <!-- Redis cache manager [end] -->
+    <!-- 配置shiro的过滤器工厂类，id- shiroFilter要和我们在web.xml中配置的过滤器一致 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="filterChainDefinitions">
+            <value>
+                # some example chain definitions:
+                # /** = anon
+                # more URL-to-FilterChain definitions here
+            </value>
+        </property>
+    </bean>
+    <!--    &lt;!&ndash; 会话ID生成器 &ndash;&gt;-->
+    <!--    <bean id="sessionIdGenerator"-->
+    <!--          class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>-->
+    <!--    &lt;!&ndash; 会话Cookie模板 关闭浏览器立即失效 &ndash;&gt;-->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="sid"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="-1"/>
+    </bean>
+    <!-- 会话DAO -->
+    <!--    <bean id="sessionDAO"-->
+    <!--          class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">-->
+    <!--        <property name="sessionIdGenerator" ref="sessionIdGenerator"/>-->
+    <!--    </bean>-->
+    <!-- 会话验证调度器，每30分钟执行一次验证 ，设定会话超时及保存 -->
+    <bean name="sessionValidationScheduler"
+          class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
+        <property name="interval" value="1800000"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+    <!-- 会话管理器 -->
+    <bean id="sessionManager"
+          class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!-- 全局会话超时时间（单位毫秒），默认30分钟 -->
+<!--        <property name="globalSessionTimeout" value="1800000"/>-->
+        <!--        <property name="deleteInvalidSessions" value="true"/>-->
+        <!--        <property name="sessionValidationSchedulerEnabled" value="true"/>-->
+        <!--                <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>-->
+        <!--        <property name="sessionDAO" ref="sessionDAO"/>-->
+        <property name="sessionIdCookieEnabled" value="true"/>
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+        <property name="sessionDAO" ref="redisSessionDAO"/>
+    </bean>
+
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="databaseRealm"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="cacheManager" ref="cacheManager"/>
+    </bean>
+    <!--    &lt;!&ndash; 相当于调用SecurityUtils.setSecurityManager(securityManager) &ndash;&gt;-->
+    <!--    <bean-->
+    <!--            class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">-->
+    <!--        <property name="staticMethod"-->
+    <!--                  value="org.apache.shiro.SecurityUtils.setSecurityManager"/>-->
+    <!--        <property name="arguments" ref="securityManager"/>-->
+    <!--    </bean>-->
+
+    <!--    自定义realm-->
+    <!--    <bean id="databaseRealm" class="work.eanson.service.realm.LoginRealm">-->
+    <!--        &lt;!&ndash;        将凭证信息设置到realm中，realm按照匹配器要求进行散列&ndash;&gt;-->
+    <!--        &lt;!&ndash;        <property name="credentialsMatcher" ref="credentialsMatcher"/>&ndash;&gt;-->
+    <!--    </bean>-->
+
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <!--    凭证匹配器-->
+    <!--    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">-->
+    <!--        <property name="hashAlgorithmName" value="md5"/>-->
+    <!--        <property name="hashIterations" value="1"/>-->
+    <!--    </bean>-->
+</beans>
