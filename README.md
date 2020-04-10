@@ -5,9 +5,9 @@ demo请见:[nation.eanson.work](http://nation.eanson.work "nation.eanson.work")
 ---
 测试棋盘码:[Test](http://nation.eanson.work/chess?n_t=1586511476075&ex=f96d4f00b2b34a2f86bca3f896ace743&ex2=f0d885aa015a46708898e61f6d632079&code=Test)
 
-具体游戏规则:见[首页](http://nation.eanson.work)右侧链接
+具体游戏规则:见[首页](http://nation.eanson.work)右侧超链接
 ## 项目描述
-该项目提供了在线对弈平台和AI分析处理接口,实现了AI和人类招法分析、在线对弈和在线观看对弈、对局记录和回放等功能,采用WebSocket协议实现棋盘数据及时传输,Redis人类步伐缓存...
+该项目提供了在线对弈平台和AI分析处理接口,实现了AI和人类招法分析、在线对弈和在线观看对弈、对局记录和回放等功能。采用WebSocket协议实现棋盘数据及时传输,Redis人类步伐缓存...
 ## 项目意义
 有利于少数民族棋类活动的推广,也让AI设计者减轻一小部分烦恼,让参加比赛的同学只关注AI本身设计，而不用为开发UI界面发愁,平台不仅提供裁判程序,而且还提供了招法记录服务,可以让AI设计者更快更好地分析AI行为。
 ### 要点
