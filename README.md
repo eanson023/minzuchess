@@ -13,7 +13,7 @@ demo请见:[nation.eanson.work](http://nation.eanson.work "nation.eanson.work")
 ## 项目意义
 有利于少数民族棋类活动的推广,也让AI设计者减轻一小部分烦恼,让参加比赛的同学只关注AI本身设计，而不用为开发UI界面发愁,平台不仅提供裁判程序,而且还提供了招法记录服务,可以让AI设计者更快更好地分析AI行为。
 ### 要点
-1. 缺少```about.properties```文件,请自行配置
+1. ```about.properties```文件,短信模板请自行配置
 2. sql在resources文件夹下
 3. 本项目许多素材尚未填充，但基本逻辑已经实现,同时支持负载均衡
 ### 具体技术
