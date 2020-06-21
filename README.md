@@ -1,11 +1,9 @@
 # Minzuchess
 民族棋类网(Spring+SpringMVC+Mybatis+Shiro+Mysql+Redis)
 ---
-demo请见:[nation.eanson.work](http://nation.eanson.work "nation.eanson.work")
+本项目已改给[Spring Boot版](https://github.com/eanson1999/minzuchess-spring-boot)
 ---
-测试棋盘码:[Test](http://nation.eanson.work/chess?n_t=1586511476075&ex=f96d4f00b2b34a2f86bca3f896ace743&ex2=f0d885aa015a46708898e61f6d632079&code=Test)
 
-具体游戏规则:见[首页](http://nation.eanson.work)右侧超链接
 ## 项目描述
 该项目提供了在线对弈平台和AI分析处理接口,实现了AI和人类招法分析、在线对弈和在线观看对弈、对局记录和回放等功能。
 ## 项目亮点
