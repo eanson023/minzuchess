@@ -1,7 +1,7 @@
 # Minzuchess
 民族棋类网(Spring+SpringMVC+Mybatis+Shiro+Mysql+Redis)
 ---
-本项目已改给[Spring Boot版](https://github.com/eanson1999/minzuchess-spring-boot)
+本项目已改为[Spring Boot版](https://github.com/eanson1999/minzuchess-spring-boot)
 ---
 
 ## 项目描述
